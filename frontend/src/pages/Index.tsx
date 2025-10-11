@@ -109,8 +109,8 @@ const Index = () => {
             />
           </div>
 
-          {/* Middle panel - Context dependent */}
-          <div className="lg:col-span-1">
+          {/* Middle panel - Context dependent (spans 2 columns for background step) */}
+          <div className={currentStep === "background" ? "lg:col-span-2" : "lg:col-span-1"}>
             <BackgroundPanel 
               isOpen={currentStep === "background"} 
               uploadedImage={uploadedPreview}
@@ -118,10 +118,12 @@ const Index = () => {
             <DescriptionPanel isOpen={currentStep === "description"} />
           </div>
 
-          {/* Right panel - Export */}
-          <div className="lg:col-span-1">
-            <ExportPanel isOpen={currentStep === "export"} />
-          </div>
+          {/* Right panel - Export (only shows when not on background step) */}
+          {currentStep !== "background" && (
+            <div className="lg:col-span-1">
+              <ExportPanel isOpen={currentStep === "export"} />
+            </div>
+          )}
         </div>
 
         {/* Navigation buttons */}
