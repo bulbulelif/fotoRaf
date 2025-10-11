@@ -1,6 +1,11 @@
 # FAL Python Services
 
-Python wrapper for FAL AI services (any-llm via OpenRouter + photokit background replacement).
+Python wrapper for FAL AI services with advanced features:
+- 🎨 **Multimodal Vision**: Enterprise LLM endpoint with image analysis support
+- 📊 **Product Categorization**: 9-category AI-powered product classification
+- 🤖 **GPT-Powered Prompts**: Intelligent prompt generation for backgrounds
+- 🎭 **Multiple Styles**: Generate variations with different background styles
+- 🖼️ **Background Replacement**: Professional e-commerce product photography
 
 ## Setup
 
@@ -29,42 +34,112 @@ Get your FAL API key from: https://fal.ai/dashboard/keys
 
 ## Usage
 
-### Python Module (`fal_client.py`)
+### Python Module (`fal_service.py`)
 
 Import and use programmatically:
 
 ```python
-from services.fal_client import FalClient
+from services.fal_service import FalClient
 
 client = FalClient()
+
+# ========================================
+# 1. BASIC TEXT GENERATION
+# ========================================
 
 # Complete text generation (blocking)
 result = client.any_llm_complete(
     prompt="Write a 2-sentence product description in Turkish.",
-    model="openai/gpt-4o-mini",
+    model="google/gemini-2.5-flash-lite",
     temperature=0.7,
     max_tokens=200,
     system_prompt="You are a senior e-commerce copywriter."
 )
 print(result["output"])
 
-# Submit async job
-request_id = client.any_llm_submit(
-    prompt="Short product pitch",
-    webhook_url="https://example.com/webhook"
+# ========================================
+# 2. ENTERPRISE LLM (MULTIMODAL VISION)
+# ========================================
+
+# Use premium models like Gemini 2.5 Pro
+result = client.any_llm_enterprise(
+    prompt="What's in this image? Image URL: https://example.com/product.jpg",
+    model="google/gemini-2.5-pro",
+    temperature=0.3
+)
+print(result["output"])
+
+# ========================================
+# 3. PRODUCT IMAGE ANALYSIS (9 CATEGORIES)
+# ========================================
+
+# Upload and analyze product image
+image_url = client.upload_file("product.jpg")
+
+# Get 9-category classification
+analysis = client.analyze_product_image(image_url)
+categories = analysis["categories"]
+
+print(f"Product Type: {categories['main_product_type']}")
+print(f"Subcategory: {categories['subcategory']}")
+print(f"Target Audience: {categories['target_audience']}")
+print(f"Price Range: {categories['price_range']}")
+print(f"Use Case: {categories['use_case']}")
+print(f"Style: {categories['style_design']}")
+print(f"Season: {categories['season_occasion']}")
+print(f"Industry: {categories['industrial_type']}")
+print(f"Vibe: {categories['vibe']}")
+
+# ========================================
+# 4. GPT-POWERED PROMPT GENERATION
+# ========================================
+
+# Generate professional background prompt
+prompt_result = client.generate_background_prompt(
+    categories=categories,
+    style_type="Clean white studio background for e-commerce"
+)
+print(f"Generated prompt: {prompt_result['prompt']}")
+
+# ========================================
+# 5. MULTIPLE BACKGROUND VARIATIONS
+# ========================================
+
+# Generate 3 different background styles automatically
+result = client.generate_multiple_backgrounds(
+    image_url=image_url,
+    categories=categories
 )
 
-# Check status
-status = client.any_llm_status(request_id)
+# Or use custom styles
+custom_styles = [
+    {
+        "name": "Studio",
+        "description": "Clean white studio background"
+    },
+    {
+        "name": "Lifestyle",
+        "description": "Natural lifestyle setting"
+    }
+]
+result = client.generate_multiple_backgrounds(
+    image_url=image_url,
+    categories=categories,
+    styles=custom_styles
+)
 
-# Get result
-result = client.any_llm_result(request_id)
+for img in result["images"]:
+    print(f"{img['style_name']}: {img['image_url']}")
 
-# Background replacement
+# ========================================
+# 6. SINGLE BACKGROUND REPLACEMENT
+# ========================================
+
 bg_result = client.background_replace(
     image_url="https://cdn.example.com/mug.jpg",
     prompt="cozy scandinavian living room, warm tones"
 )
+print(f"New background: {bg_result['image']['url']}")
 ```
 
 ### CLI Worker (`fal_worker.py`)
@@ -174,6 +249,135 @@ console.log(description);
 
 ### FalClient Class
 
+#### `any_llm_enterprise(prompt, **kwargs) -> dict`
+
+**NEW** - Enterprise LLM endpoint with support for premium models and multimodal vision.
+
+**Parameters:**
+- `prompt` (str): User prompt (can include "Image URL: ..." for vision)
+- `system_prompt` (str, optional): System prompt
+- `model` (str, optional): Model name (default: "google/gemini-2.5-pro")
+- `temperature` (float, optional): Sampling temperature (default: 0.7)
+- `max_tokens` (int, optional): Maximum tokens to generate
+- `with_logs` (bool): Print queue logs to stderr (default: False)
+
+**Returns:** `dict`
+```python
+{
+  "output": str,        # Generated text
+  "error": str | None,  # Error message if failed
+  "raw": dict          # Full API response
+}
+```
+
+**Example:**
+```python
+result = client.any_llm_enterprise(
+    prompt="Image URL: https://example.com/product.jpg\n\nDescribe this product.",
+    model="google/gemini-2.5-pro",
+    temperature=0.3
+)
+```
+
+#### `analyze_product_image(image_url, **kwargs) -> dict`
+
+**NEW** - Analyzes product image and returns 9-category classification using multimodal vision.
+
+**Parameters:**
+- `image_url` (str): URL of the product image to analyze
+- `model` (str, optional): Vision model to use (default: "google/gemini-2.5-pro")
+- `temperature` (float, optional): Sampling temperature (default: 0.3)
+
+**Returns:** `dict`
+```python
+{
+  "categories": {
+    "main_product_type": str,    # e.g., "Footwear"
+    "subcategory": str,          # e.g., "Sneakers"
+    "target_audience": str,      # e.g., "Men"
+    "price_range": str,          # e.g., "Mid-range"
+    "use_case": str,            # e.g., "Casual Lifestyle"
+    "style_design": str,        # e.g., "Streetwear"
+    "season_occasion": str,     # e.g., "All Season"
+    "industrial_type": str,     # e.g., "Footwear Manufacturing"
+    "vibe": str                 # e.g., "Urban/Street"
+  },
+  "error": str | None,
+  "raw_output": str
+}
+```
+
+**Example:**
+```python
+analysis = client.analyze_product_image("https://example.com/shoe.jpg")
+print(analysis["categories"]["main_product_type"])  # "Footwear"
+```
+
+#### `generate_background_prompt(categories, style_type, **kwargs) -> dict`
+
+**NEW** - Generates professional background replacement prompt using GPT based on product categories.
+
+**Parameters:**
+- `categories` (dict): Product categories (from `analyze_product_image`)
+- `style_type` (str): Style description for the background
+- `model` (str, optional): Model to use (default: "openai/gpt-5-mini")
+
+**Returns:** `dict`
+```python
+{
+  "prompt": str,        # Generated prompt text
+  "error": str | None   # Error message if failed
+}
+```
+
+**Example:**
+```python
+prompt_result = client.generate_background_prompt(
+    categories={"main_product_type": "Footwear", "subcategory": "Sneakers"},
+    style_type="Clean white studio background for e-commerce"
+)
+print(prompt_result["prompt"])
+```
+
+#### `generate_multiple_backgrounds(image_url, categories, **kwargs) -> dict`
+
+**NEW** - Generates multiple background variations for a product image using GPT-powered prompts.
+
+**Parameters:**
+- `image_url` (str): URL of the original product image
+- `categories` (dict): Product categories (from `analyze_product_image`)
+- `styles` (list[dict], optional): List of style dicts with 'name' and 'description' keys. If None, uses default 3 styles (Studio, Lifestyle, Premium)
+
+**Returns:** `dict`
+```python
+{
+  "images": [
+    {
+      "style_name": str,
+      "style_description": str,
+      "image_url": str,
+      "prompt": str,
+      "width": int,
+      "height": int
+    }
+  ],
+  "total_generated": int,
+  "total_requested": int,
+  "errors": list | None
+}
+```
+
+**Example:**
+```python
+result = client.generate_multiple_backgrounds(
+    image_url="https://example.com/product.jpg",
+    categories=categories
+)
+
+for img in result["images"]:
+    print(f"{img['style_name']}: {img['image_url']}")
+```
+
 #### `any_llm_complete(prompt, **kwargs) -> dict`
 
 Synchronous text generation (blocks until complete).
@@ -277,14 +481,27 @@ Exit codes:
 
 ## Model Options
 
+### Standard Endpoint (`any_llm_complete`)
 Default model: `google/gemini-2.5-flash-lite`
 
-Other supported models (via OpenRouter):
+Supported models (via OpenRouter):
 - `openai/gpt-4o-mini`
 - `openai/gpt-4o`
 - `anthropic/claude-3-5-sonnet`
 - `google/gemini-pro-1.5`
-- See FAL docs for full list
+
+### Enterprise Endpoint (`any_llm_enterprise`, `analyze_product_image`, `generate_background_prompt`)
+Default models:
+- Vision/Analysis: `google/gemini-2.5-pro` (multimodal)
+- Prompt Generation: `openai/gpt-5-mini`
+
+Supported premium models:
+- `google/gemini-2.5-pro` - Best for vision and complex reasoning
+- `google/gemini-2.5-flash` - Fast multimodal
+- `openai/gpt-5-mini` - Cost-effective text generation
+- `openai/gpt-4-turbo` - High-quality text
+
+See [FAL AI docs](https://fal.ai/models) for full model list.
 
 ## Testing
 
@@ -293,8 +510,56 @@ Run smoke test:
 ```bash
 cd backend
 export FAL_KEY=your_key_here
-python src/services/fal_client.py
+python src/services/fal_service.py
 ```
 
-Expected output: JSON with generated product description.
+Expected output: 
+- ✓ Basic LLM completion test
+- ✓ Enterprise endpoint test
+- ✓ Background prompt generation test
+- JSON summary with all features
+
+## Complete Workflow Example
+
+Here's a complete e-commerce workflow using all features:
+
+```python
+from services.fal_service import FalClient
+
+client = FalClient()
+
+# 1. Upload product image
+image_url = client.upload_file("product.jpg")
+print(f"📷 Image uploaded: {image_url}")
+
+# 2. Analyze product (9 categories)
+analysis = client.analyze_product_image(image_url)
+categories = analysis["categories"]
+print(f"📊 Product: {categories['main_product_type']} - {categories['subcategory']}")
+
+# 3. Generate multiple background variations
+result = client.generate_multiple_backgrounds(
+    image_url=image_url,
+    categories=categories
+)
+
+print(f"🎨 Generated {result['total_generated']} variations:")
+for img in result["images"]:
+    print(f"  - {img['style_name']}: {img['image_url']}")
+
+# 4. (Optional) Generate product description
+desc = client.any_llm_complete(
+    prompt=f"Write a 2-sentence product description in Turkish for a {categories['subcategory']}",
+    model="google/gemini-2.5-flash-lite"
+)
+print(f"✍️ Description: {desc['output']}")
+```
+
+This workflow:
+1. Uploads the product image
+2. Analyzes it using AI vision (9 categories)
+3. Generates 3 professional background variations
+4. Creates marketing copy
+
+Perfect for e-commerce automation!
 

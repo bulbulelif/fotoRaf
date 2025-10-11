@@ -4,10 +4,14 @@ FAL Worker CLI - Command-line interface for FAL operations.
 
 Usage:
     python fal_worker.py any-llm-complete --prompt "Your prompt here"
+    python fal_worker.py any-llm-enterprise --prompt "Your prompt here"
     python fal_worker.py any-llm-submit --prompt "Your prompt here"
     python fal_worker.py any-llm-status --request_id <id>
     python fal_worker.py any-llm-result --request_id <id>
     python fal_worker.py background --image_url "https://..." --prompt "..."
+    python fal_worker.py analyze-product --image_url "https://..."
+    python fal_worker.py generate-bg-prompt --categories '{"main_product_type":"Footwear"}' --style_type "Clean studio"
+    python fal_worker.py generate-multiple-bg --image_url "https://..." --categories '{"main_product_type":"Footwear"}'
 
 Examples:
     # Complete text generation
@@ -17,6 +21,12 @@ Examples:
       --temperature 0.7 \\
       --max_tokens 200 \\
       --system "You are a senior e-commerce copywriter."
+
+    # Enterprise endpoint (vision support)
+    python fal_worker.py any-llm-enterprise \\
+      --prompt "What is in this image?" \\
+      --model "google/gemini-2.5-pro" \\
+      --temperature 0.3
 
     # Submit async job
     python fal_worker.py any-llm-submit \\
@@ -34,6 +44,21 @@ Examples:
       --image_url "https://cdn.example.com/uploads/mug.jpg" \\
       --prompt "cozy scandinavian living room, warm tones" \\
       --remove_bg true
+
+    # Analyze product image
+    python fal_worker.py analyze-product \\
+      --image_url "https://cdn.example.com/uploads/shoe.jpg" \\
+      --model "google/gemini-2.5-pro"
+
+    # Generate background prompt
+    python fal_worker.py generate-bg-prompt \\
+      --categories '{"main_product_type":"Footwear","subcategory":"Sneakers"}' \\
+      --style_type "Clean white studio background for e-commerce"
+
+    # Generate multiple backgrounds
+    python fal_worker.py generate-multiple-bg \\
+      --image_url "https://cdn.example.com/uploads/shoe.jpg" \\
+      --categories '{"main_product_type":"Footwear"}'
 """
 
 import argparse
@@ -102,6 +127,35 @@ def main():
         help="Priority mode (default: latency)"
     )
     complete_parser.add_argument(
+        "--with_logs",
+        action="store_true",
+        help="Print log streams to stderr"
+    )
+    
+    # any-llm-enterprise
+    enterprise_parser = subparsers.add_parser(
+        "any-llm-enterprise",
+        help="Enterprise LLM endpoint with vision support"
+    )
+    enterprise_parser.add_argument("--prompt", required=True, help="User prompt")
+    enterprise_parser.add_argument("--system", dest="system_prompt", help="System prompt")
+    enterprise_parser.add_argument(
+        "--model",
+        default="google/gemini-2.5-pro",
+        help="Model name (default: google/gemini-2.5-pro)"
+    )
+    enterprise_parser.add_argument(
+        "--temperature",
+        type=float,
+        default=0.7,
+        help="Temperature (default: 0.7)"
+    )
+    enterprise_parser.add_argument(
+        "--max_tokens",
+        type=int,
+        help="Maximum tokens to generate"
+    )
+    enterprise_parser.add_argument(
         "--with_logs",
         action="store_true",
         help="Print log streams to stderr"
@@ -196,6 +250,69 @@ def main():
         help="Request timeout in seconds (default: 110)"
     )
     
+    # analyze-product
+    analyze_parser = subparsers.add_parser(
+        "analyze-product",
+        help="Analyze product image and return 9-category classification"
+    )
+    analyze_parser.add_argument(
+        "--image_url",
+        required=True,
+        help="Product image URL to analyze"
+    )
+    analyze_parser.add_argument(
+        "--model",
+        default="google/gemini-2.5-pro",
+        help="Vision model to use (default: google/gemini-2.5-pro)"
+    )
+    analyze_parser.add_argument(
+        "--temperature",
+        type=float,
+        default=0.3,
+        help="Temperature (default: 0.3)"
+    )
+    
+    # generate-bg-prompt
+    bg_prompt_parser = subparsers.add_parser(
+        "generate-bg-prompt",
+        help="Generate background replacement prompt from categories"
+    )
+    bg_prompt_parser.add_argument(
+        "--categories",
+        required=True,
+        help="Product categories as JSON string"
+    )
+    bg_prompt_parser.add_argument(
+        "--style_type",
+        required=True,
+        help="Style description for the background"
+    )
+    bg_prompt_parser.add_argument(
+        "--model",
+        default="openai/gpt-5-mini",
+        help="Model to use (default: openai/gpt-5-mini)"
+    )
+    
+    # generate-multiple-bg
+    multiple_bg_parser = subparsers.add_parser(
+        "generate-multiple-bg",
+        help="Generate multiple background variations"
+    )
+    multiple_bg_parser.add_argument(
+        "--image_url",
+        required=True,
+        help="Original product image URL"
+    )
+    multiple_bg_parser.add_argument(
+        "--categories",
+        required=True,
+        help="Product categories as JSON string"
+    )
+    multiple_bg_parser.add_argument(
+        "--styles",
+        help="Optional: Custom styles as JSON array"
+    )
+    
     args = parser.parse_args()
     
     # Load .env if specified and exists
@@ -225,6 +342,16 @@ def main():
                 temperature=args.temperature,
                 max_tokens=args.max_tokens,
                 priority=args.priority,
+                with_logs=args.with_logs
+            )
+        
+        elif args.command == "any-llm-enterprise":
+            result = client.any_llm_enterprise(
+                prompt=args.prompt,
+                system_prompt=args.system_prompt,
+                model=args.model,
+                temperature=args.temperature,
+                max_tokens=args.max_tokens,
                 with_logs=args.with_logs
             )
         
@@ -268,6 +395,35 @@ def main():
                 prompt=args.prompt,
                 remove_bg=args.remove_bg,
                 timeout=args.timeout
+            )
+        
+        elif args.command == "analyze-product":
+            result = client.analyze_product_image(
+                image_url=args.image_url,
+                model=args.model,
+                temperature=args.temperature
+            )
+        
+        elif args.command == "generate-bg-prompt":
+            # Parse categories JSON
+            categories = json.loads(args.categories)
+            result = client.generate_background_prompt(
+                categories=categories,
+                style_type=args.style_type,
+                model=args.model
+            )
+        
+        elif args.command == "generate-multiple-bg":
+            # Parse categories JSON
+            categories = json.loads(args.categories)
+            # Parse styles JSON if provided
+            styles = None
+            if args.styles:
+                styles = json.loads(args.styles)
+            result = client.generate_multiple_backgrounds(
+                image_url=args.image_url,
+                categories=categories,
+                styles=styles
             )
         
         # Output JSON result to stdout
