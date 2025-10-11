@@ -63,7 +63,57 @@ curl -X POST http://localhost:3000/v1/generate \
 
 ---
 
-## 2. Product Description Generation
+## 2. Product Image Analysis
+
+Analyze product images and extract detailed categories using AI vision.
+
+### Endpoint
+```
+POST /v1/analyze-product
+```
+
+### Request Body
+```json
+{
+  "imageUrl": "https://example.com/product.jpg",    // Required: Product image URL
+  "model": "google/gemini-2.5-flash",               // Optional: Vision model (default: gemini-2.5-flash)
+  "temperature": 0.3                                 // Optional: 0-1 (default: 0.3)
+}
+```
+
+### Response
+```json
+{
+  "main_product_type": "Footwear",
+  "subcategory": "Sneakers",
+  "target_audience": "Men",
+  "price_range": "Mid-range",
+  "use_case": "Casual Lifestyle",
+  "style_design": "Streetwear",
+  "season_occasion": "All Season",
+  "industrial_type": "Footwear Manufacturing",
+  "vibe": "Urban/Street"
+}
+```
+
+### Example
+```bash
+curl -X POST http://localhost:3000/v1/analyze-product \
+  -H "Content-Type: application/json" \
+  -d '{
+    "imageUrl": "http://localhost:3000/uploads/product.jpg"
+  }' | jq '.'
+```
+
+### Features
+- ✅ Vision AI using Google Gemini 2.5 Flash
+- ✅ 9 detailed product categories
+- ✅ Accurate product classification
+- ✅ Response time: ~3-5 seconds
+
+---
+
+## 3. Product Description Generation
 
 Generate SEO-friendly product descriptions in Turkish or English.
 
@@ -154,7 +204,7 @@ curl -X POST http://localhost:3000/v1/descriptions/generate \
 
 ---
 
-## 3. One-Click Marketing Kit
+## 4. One-Click Marketing Kit
 
 Generate a complete marketing kit for any product in a single API call. Perfect for e-commerce listings, social media, and accessibility.
 

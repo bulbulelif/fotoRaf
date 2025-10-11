@@ -12,6 +12,8 @@ import { ExportPanel } from "@/components/ExportPanel";
 import CircularGallery from "@/components/CircularGallery";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, Sparkles } from "lucide-react";
+import { uploadFile } from "@/services/api";
+import { toast } from "sonner";
 
 type Step = "hero" | "upload" | "background" | "description" | "export";
 
@@ -19,14 +21,33 @@ const Index = () => {
   const [currentStep, setCurrentStep] = useState<Step>("hero");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [uploadedPreview, setUploadedPreview] = useState<string | null>(null);
+  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
-  const handleUpload = (file: File) => {
+  const handleUpload = async (file: File) => {
     setUploadedFile(file);
+    
+    // Önizleme için local olarak oku
     const reader = new FileReader();
     reader.onload = (e) => {
       setUploadedPreview(e.target?.result as string);
     };
     reader.readAsDataURL(file);
+
+    // Backend'e yükle
+    setIsUploading(true);
+    try {
+      const result = await uploadFile(file);
+      setUploadedUrl(result.url);
+      toast.success("Görsel başarıyla yüklendi!");
+    } catch (error) {
+      console.error("Upload error:", error);
+      toast.error(
+        error instanceof Error ? error.message : "Görsel yükleme başarısız"
+      );
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const steps: Step[] = ["upload", "background", "description", "export"];
@@ -137,6 +158,7 @@ const Index = () => {
             <BackgroundPanel 
               isOpen={currentStep === "background"} 
               uploadedImage={uploadedPreview}
+              uploadedImageUrl={uploadedUrl || undefined}
             />
             <DescriptionPanel isOpen={currentStep === "description"} />
           </div>
@@ -153,10 +175,10 @@ const Index = () => {
             <Button 
               size="lg"
               onClick={handleNext}
-              disabled={!uploadedFile && currentStep === "upload"}
+              disabled={(!uploadedFile && currentStep === "upload") || isUploading}
               className="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-8"
             >
-              Continue to {steps[currentStepIndex + 1]}
+              {isUploading ? "Yükleniyor..." : `Continue to ${steps[currentStepIndex + 1]}`}
             </Button>
           </div>
         )}

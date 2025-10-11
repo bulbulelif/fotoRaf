@@ -8,7 +8,18 @@ const exec = promisify(execFile);
 const schema = z.object({
   inputImageUrl: z.string().url(),
   prompt: z.string().optional(),
-  removeBg: z.boolean().default(true)
+  removeBg: z.boolean().default(true),
+  categories: z.object({
+    main_product_type: z.string(),
+    subcategory: z.string(),
+    target_audience: z.string(),
+    price_range: z.string(),
+    use_case: z.string(),
+    style_design: z.string(),
+    season_occasion: z.string(),
+    industrial_type: z.string(),
+    vibe: z.string()
+  }).optional()
 });
 
 // Default background prompts (rastgele seçilecek)
@@ -21,7 +32,7 @@ const DEFAULT_BACKGROUNDS = [
 ];
 
 export async function generateController(req: FastifyRequest, reply: FastifyReply) {
-  const { inputImageUrl, prompt, removeBg } = schema.parse(req.body);
+  const { inputImageUrl, prompt, removeBg, categories } = schema.parse(req.body);
 
   try {
     let finalPrompt: string;
@@ -60,17 +71,63 @@ Just output the refined prompt, nothing else.`,
         finalPrompt = llmData.output.trim();
         req.log.info({ refinedPrompt: finalPrompt }, 'Prompt refined successfully');
       }
+    } else if (categories) {
+      // Kategoriler varsa, Python'daki generate_background_prompt fonksiyonunu kullan
+      req.log.info({ categories }, 'Generating prompt from categories');
+      
+      const { stdout: promptOutput } = await exec('python3', [
+        'src/services/fal_worker.py',
+        'generate-bg-prompt',
+        '--categories', JSON.stringify(categories),
+        '--style_type', 'Professional e-commerce product photography with premium aesthetic'
+      ], {
+        timeout: 30000,
+        cwd: process.cwd()
+      });
+
+      const promptData = JSON.parse(promptOutput);
+      
+      if (promptData.error) {
+        req.log.warn({ err: promptData.error }, 'Category-based prompt generation failed, using default');
+        finalPrompt = DEFAULT_BACKGROUNDS[Math.floor(Math.random() * DEFAULT_BACKGROUNDS.length)];
+      } else {
+        finalPrompt = promptData.prompt;
+        req.log.info({ generatedPrompt: finalPrompt }, 'Prompt generated from categories');
+      }
     } else {
-      // Prompt yoksa, default'lardan rastgele seç
+      // Ne prompt ne de kategoriler yoksa, default'lardan rastgele seç
       finalPrompt = DEFAULT_BACKGROUNDS[Math.floor(Math.random() * DEFAULT_BACKGROUNDS.length)];
       req.log.info({ defaultPrompt: finalPrompt }, 'Using default background');
+    }
+
+    // Eğer localhost URL'si ise, önce FAL'a yükle
+    let falImageUrl = inputImageUrl;
+    if (inputImageUrl.includes('localhost') || inputImageUrl.includes('127.0.0.1')) {
+      req.log.info({ originalUrl: inputImageUrl }, 'Localhost URL detected, uploading to FAL');
+      
+      // Local dosya yolunu al
+      const urlPath = new URL(inputImageUrl).pathname;
+      const localPath = `${process.cwd()}${urlPath}`;
+      
+      // FAL'a yükle
+      const { stdout: uploadOutput } = await exec('python3', [
+        '-c',
+        `import fal_client; print(fal_client.upload_file('${localPath}'))`
+      ], {
+        timeout: 30000,
+        cwd: process.cwd(),
+        env: { ...process.env }
+      });
+      
+      falImageUrl = uploadOutput.trim();
+      req.log.info({ falImageUrl }, 'Image uploaded to FAL');
     }
 
     // Background replacement çağır
     const { stdout } = await exec('python3', [
       'src/services/fal_worker.py',
       'background',
-      '--image_url', inputImageUrl,
+      '--image_url', falImageUrl,
       '--prompt', finalPrompt,
       '--remove_bg', String(removeBg)
     ], { 

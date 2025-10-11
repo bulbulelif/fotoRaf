@@ -388,30 +388,29 @@ class FalClient:
                 }]
             }
         """
-        # Use FAL's nano-banana model for image generation
+        # Use FAL's nano-banana/edit model for image-to-image (product preservation)
         try:
-            # Build prompt for product photography with background
-            full_prompt = f"{prompt}, product photography, high quality, professional lighting"
+            # Build prompt for background replacement ONLY
+            # CRITICAL: Using /edit endpoint which is specifically designed to preserve the subject
+            full_prompt = f"Change only the background to: {prompt}. Keep the product exactly as it is in the original image."
             
-            # Build arguments for nano-banana
+            # Build arguments for nano-banana/edit (image-to-image)
+            # This endpoint is specifically designed for editing, not generation
             arguments = {
                 "prompt": full_prompt,
-                "image_url": image_url,
-                "image_size": "square_hd",
-                "num_inference_steps": 4,
-                "num_images": 1,
-                "enable_safety_checker": True
+                "image_urls": [image_url]  # Note: image_urls (plural) for /edit endpoint
             }
             
             # Queue update callback for logs
             def on_queue_update(update):
                 if isinstance(update, fal_client.InProgress):
                     for log in update.logs:
-                        print(f"[nano-banana] {log.get('message', '')}", file=sys.stderr)
+                        print(f"[nano-banana/edit] {log.get('message', '')}", file=sys.stderr)
             
             # Use fal_client.subscribe for synchronous call with logs
+            # Using nano-banana/edit endpoint (same as backgroundGeneration.py)
             result = fal_client.subscribe(
-                "fal-ai/nano-banana",
+                "fal-ai/nano-banana/edit",
                 arguments=arguments,
                 with_logs=True,
                 on_queue_update=on_queue_update
@@ -591,11 +590,12 @@ Generate a detailed, professional image generation prompt for an image-to-image 
 
 The style type is: {style_type}
 
-Requirements:
-- The prompt must START with "Change only the background to..."
-- The prompt must be specific about keeping the original product unchanged
+CRITICAL Requirements:
+- The prompt must EMPHASIZE: "DO NOT CHANGE THE PRODUCT. Keep the original product exactly as shown."
+- The prompt must be specific about ONLY replacing the background
+- The prompt must preserve product details, colors, and features
 - The prompt must be suitable for e-commerce photography
-- The prompt should be creative and detailed
+- The prompt should be creative and detailed about the BACKGROUND only
 - The prompt should match the product's categories and the requested style type
 - Length: 2-3 sentences maximum
 
