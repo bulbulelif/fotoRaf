@@ -9,9 +9,10 @@ interface BackgroundPanelProps {
   isOpen: boolean;
   uploadedImage: string | null;
   uploadedImageUrl?: string;
+  onGenerated?: (imageUrl: string, prompt: string) => void;
 }
 
-export const BackgroundPanel = ({ isOpen, uploadedImage, uploadedImageUrl }: BackgroundPanelProps) => {
+export const BackgroundPanel = ({ isOpen, uploadedImage, uploadedImageUrl, onGenerated }: BackgroundPanelProps) => {
   const [backgroundPrompt, setBackgroundPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
@@ -40,6 +41,12 @@ export const BackgroundPanel = ({ isOpen, uploadedImage, uploadedImageUrl }: Bac
 
       setGeneratedImage(result.resultUrl);
       setUsedPrompt(result.usedPrompt);
+      
+      // Parent component'e bildir
+      if (onGenerated) {
+        onGenerated(result.resultUrl, result.usedPrompt);
+      }
+      
       toast.success("Arka plan başarıyla oluşturuldu!", { id: loadingToast });
     } catch (error) {
       console.error("Error generating background:", error);

@@ -10,32 +10,32 @@ const exportOptions = [
   {
     id: "social",
     icon: Share2,
-    title: "Social Media Kit",
-    description: "Optimized for Instagram, Facebook, Pinterest",
+    title: "Sosyal Medya Kiti",
+    description: "Instagram, Facebook, Pinterest için optimize edilmiş",
     formats: "JPG, PNG (1080x1080, 1200x628)"
   },
   {
     id: "ecommerce",
     icon: ShoppingCart,
-    title: "E-commerce Bundle",
-    description: "Product images for Shopify, Amazon, Etsy",
-    formats: "High-res PNG with white background"
+    title: "E-ticaret Paketi",
+    description: "Trendyol, Amazon, Shopify için ürün görselleri",
+    formats: "Beyaz arka planlı yüksek çözünürlüklü PNG"
   },
   {
     id: "custom",
     icon: ImageIcon,
-    title: "Custom Export",
-    description: "Choose your own dimensions and format",
-    formats: "Any size, JPG/PNG/WEBP"
+    title: "Özel Dışa Aktarım",
+    description: "Kendi boyut ve formatınızı seçin",
+    formats: "Her boyut, JPG/PNG/WEBP"
   }
 ];
 
 export const ExportPanel = ({ isOpen }: ExportPanelProps) => {
   const handleExport = (optionId: string) => {
-    toast.success(`Exporting ${optionId} kit...`);
+    toast.success(`${optionId} kiti dışa aktarılıyor...`);
     // Simulate download
     setTimeout(() => {
-      toast.success("Download complete!");
+      toast.success("İndirme tamamlandı!");
     }, 1500);
   };
 
@@ -48,8 +48,8 @@ export const ExportPanel = ({ isOpen }: ExportPanelProps) => {
           <Download className="w-5 h-5 text-secondary" />
         </div>
         <div>
-          <h2 className="text-xl font-bold">Export & Share</h2>
-          <p className="text-sm text-muted-foreground">Download your enhanced photos</p>
+          <h2 className="text-xl font-bold">Dışa Aktar & Paylaş</h2>
+          <p className="text-sm text-muted-foreground">İyileştirilmiş fotoğraflarınızı indirin</p>
         </div>
       </div>
 
@@ -74,7 +74,7 @@ export const ExportPanel = ({ isOpen }: ExportPanelProps) => {
                     className="bg-gradient-primary w-full sm:w-auto"
                   >
                     <Download className="w-4 h-4 mr-2" />
-                    Download
+                    İndir
                   </Button>
                 </div>
               </div>
@@ -87,12 +87,12 @@ export const ExportPanel = ({ isOpen }: ExportPanelProps) => {
         <div className="flex items-start gap-3">
           <ShoppingCart className="w-5 h-5 shrink-0 mt-1" />
           <div>
-            <p className="font-bold mb-1">Ready to add to your store?</p>
+            <p className="font-bold mb-1">Mağazanıza eklemeye hazır mısınız?</p>
             <p className="text-sm opacity-90 mb-4">
-              Connect your e-commerce platform and publish directly to your product catalog.
+              E-ticaret platformunuzu bağlayın ve doğrudan ürün kataloğunuza yayınlayın.
             </p>
             <Button variant="secondary" className="bg-white/20 hover:bg-white/30 text-secondary-foreground border-white/30">
-              Connect Store
+              Mağazayı Bağla
             </Button>
           </div>
         </div>

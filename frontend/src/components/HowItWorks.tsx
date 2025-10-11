@@ -4,26 +4,26 @@ const steps = [
   {
     icon: Upload,
     number: "01",
-    title: "Upload Your Product",
-    description: "Drag and drop your product photo. Works with any image quality or background."
+    title: "Ürününüzü Yükleyin",
+    description: "Ürün fotoğrafınızı sürükleyip bırakın. Her görsel kalitesi ve arka planla çalışır."
   },
   {
     icon: Wand2,
     number: "02",
-    title: "Choose Your Style",
-    description: "Describe your perfect scene or let us handle it."
+    title: "Stilinizi Seçin",
+    description: "Mükemmel sahnenizi tanımlayın veya gerisini bize bırakın."
   },
   {
     icon: Sparkles,
     number: "03",
-    title: "Generate Copy",
-    description: "Let fotoRaf craft compelling product descriptions and marketing content that converts."
+    title: "İçerik Oluşturun",
+    description: "fotoRaf'ın dönüşüm sağlayan etkileyici ürün açıklamaları ve pazarlama içerikleri oluşturmasına izin verin."
   },
   {
     icon: Download,
     number: "04",
-    title: "Download & Publish",
-    description: "Get studio-quality images optimized for every platform. Start selling in minutes."
+    title: "İndirin ve Yayınlayın",
+    description: "Her platform için optimize edilmiş stüdyo kalitesinde görseller edinin. Dakikalar içinde satışa başlayın."
   }
 ];
 
@@ -37,16 +37,16 @@ export const HowItWorks = () => {
         <div className="text-center space-y-4 mb-16 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full border border-primary/20">
             <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium text-primary">Simple Process</span>
+            <span className="text-sm font-medium text-primary">Basit Süreç</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
-            From Upload to
+            Yüklemeden Yayınlamaya
             <span className="block bg-gradient-primary bg-clip-text text-transparent">
-              Published in Minutes
+              Dakikalar İçinde
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            No complex software. No design skills required. Just beautiful results.
+            Karmaşık yazılım yok. Tasarım becerisi gerekmiyor. Sadece muhteşem sonuçlar.
           </p>
         </div>
 

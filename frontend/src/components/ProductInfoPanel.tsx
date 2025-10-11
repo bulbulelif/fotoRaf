@@ -28,7 +28,7 @@ export const ProductInfoPanel = ({ uploadedImage, isVisible }: ProductInfoPanelP
     if (!uploadedImage) return;
 
     setIsAnalyzing(true);
-    const loadingToast = toast.loading("Analyzing product...");
+    const loadingToast = toast.loading("Ürün analiz ediliyor...");
 
     try {
       const response = await fetch(
@@ -47,16 +47,16 @@ export const ProductInfoPanel = ({ uploadedImage, isVisible }: ProductInfoPanelP
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.error || "Failed to analyze product");
+        throw new Error(error.error || "Ürün analizi başarısız");
       }
 
       const analysisData = await response.json();
       setProductInfo(analysisData);
-      toast.success("Product analysis completed!", { id: loadingToast });
+      toast.success("Ürün analizi tamamlandı!", { id: loadingToast });
     } catch (error) {
       console.error("Error analyzing product:", error);
       toast.error(
-        error instanceof Error ? error.message : "Failed to analyze product",
+        error instanceof Error ? error.message : "Ürün analizi başarısız",
         { id: loadingToast }
       );
     } finally {
@@ -73,15 +73,15 @@ export const ProductInfoPanel = ({ uploadedImage, isVisible }: ProductInfoPanelP
   if (!isVisible || !uploadedImage) return null;
 
   const infoFields = [
-    { key: "mainProductType", label: "Main Product Type" },
-    { key: "subcategory", label: "Subcategory" },
-    { key: "targetAudience", label: "Target Audience" },
-    { key: "priceRange", label: "Price Range" },
-    { key: "useCase", label: "Use Case" },
-    { key: "styleDesign", label: "Style & Design" },
-    { key: "seasonOccasion", label: "Season/Occasion" },
-    { key: "industrialType", label: "Industrial Type" },
-    { key: "vibe", label: "Vibe" },
+    { key: "mainProductType", label: "Ana Ürün Tipi" },
+    { key: "subcategory", label: "Alt Kategori" },
+    { key: "targetAudience", label: "Hedef Kitle" },
+    { key: "priceRange", label: "Fiyat Aralığı" },
+    { key: "useCase", label: "Kullanım Alanı" },
+    { key: "styleDesign", label: "Stil & Tasarım" },
+    { key: "seasonOccasion", label: "Sezon/Özel Gün" },
+    { key: "industrialType", label: "Endüstri Tipi" },
+    { key: "vibe", label: "Atmosfer" },
   ] as const;
 
   return (
@@ -91,8 +91,8 @@ export const ProductInfoPanel = ({ uploadedImage, isVisible }: ProductInfoPanelP
           <Brain className="w-5 h-5 text-primary" />
         </div>
         <div>
-          <h2 className="text-xl font-bold">Product Analysis</h2>
-          <p className="text-sm text-muted-foreground">AI-powered product insights</p>
+          <h2 className="text-xl font-bold">Ürün Analizi</h2>
+          <p className="text-sm text-muted-foreground">Yapay zeka destekli ürün içgörüleri</p>
         </div>
       </div>
 
@@ -100,7 +100,7 @@ export const ProductInfoPanel = ({ uploadedImage, isVisible }: ProductInfoPanelP
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto mb-4" />
-            <p className="text-sm text-muted-foreground">Analyzing your product...</p>
+            <p className="text-sm text-muted-foreground">Ürününüz analiz ediliyor...</p>
           </div>
         </div>
       ) : productInfo ? (
@@ -112,7 +112,7 @@ export const ProductInfoPanel = ({ uploadedImage, isVisible }: ProductInfoPanelP
               </label>
               <div className="p-3 bg-muted rounded-lg border border-border">
                 <span className="text-sm">
-                  {productInfo[field.key] || "Not detected"}
+                  {productInfo[field.key] || "Tespit edilemedi"}
                 </span>
               </div>
             </div>
@@ -126,7 +126,7 @@ export const ProductInfoPanel = ({ uploadedImage, isVisible }: ProductInfoPanelP
             className="bg-primary hover:bg-primary/90 text-primary-foreground"
           >
             <Brain className="w-4 h-4 mr-2" />
-            Analyze Product
+            Ürünü Analiz Et
           </Button>
         </div>
       )}

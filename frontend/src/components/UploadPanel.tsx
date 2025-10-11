@@ -41,7 +41,7 @@ export const UploadPanel = ({ onUpload, isOpen }: UploadPanelProps) => {
 
   const handleFile = (file: File) => {
     if (!file.type.startsWith('image/')) {
-      toast.error("Please upload an image file");
+      toast.error("Lütfen bir görsel dosyası yükleyin");
       return;
     }
 
@@ -51,7 +51,7 @@ export const UploadPanel = ({ onUpload, isOpen }: UploadPanelProps) => {
     };
     reader.readAsDataURL(file);
     onUpload(file);
-    toast.success("Image uploaded successfully!");
+    toast.success("Görsel başarıyla yüklendi!");
   };
 
   const clearPreview = () => {
@@ -67,8 +67,8 @@ export const UploadPanel = ({ onUpload, isOpen }: UploadPanelProps) => {
           <Upload className="w-5 h-5 text-secondary" />
         </div>
         <div>
-          <h2 className="text-xl font-bold">Upload Product Photo</h2>
-          <p className="text-sm text-muted-foreground">Drag & drop or click to upload</p>
+          <h2 className="text-xl font-bold">Ürün Fotoğrafı Yükle</h2>
+          <p className="text-sm text-muted-foreground">Sürükle & bırak veya yüklemek için tıkla</p>
         </div>
       </div>
 
@@ -76,7 +76,7 @@ export const UploadPanel = ({ onUpload, isOpen }: UploadPanelProps) => {
         <div className="relative group">
           <img 
             src={preview} 
-            alt="Preview" 
+            alt="Önizleme" 
             className="w-full h-64 object-contain rounded-xl bg-muted"
           />
           <Button
@@ -111,11 +111,11 @@ export const UploadPanel = ({ onUpload, isOpen }: UploadPanelProps) => {
               <ImageIcon className="w-8 h-8 text-secondary" />
             </div>
             <div>
-              <p className="text-lg font-semibold mb-1">Drop your image here</p>
-              <p className="text-sm text-muted-foreground">or click to browse</p>
+              <p className="text-lg font-semibold mb-1">Görselinizi buraya bırakın</p>
+              <p className="text-sm text-muted-foreground">veya göz atmak için tıklayın</p>
             </div>
             <p className="text-xs text-muted-foreground">
-              Supports: JPG, PNG, WEBP (max 10MB)
+              Desteklenen formatlar: JPG, PNG, WEBP (maks 10MB)
             </p>
           </div>
         </div>

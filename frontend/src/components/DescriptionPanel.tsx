@@ -1,16 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { FileText, Copy, RefreshCw, Check, Loader2, Sparkles } from "lucide-react";
+import { FileText, Copy, RefreshCw, Check, Loader2, Sparkles, Download, Image as ImageIcon } from "lucide-react";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { generateMarketingKit } from "@/services/api";
+import { generateMarketingKit, generateDescription } from "@/services/api";
 
 interface DescriptionPanelProps {
   isOpen: boolean;
+  generatedImage?: string | null;
+  usedPrompt?: string;
 }
 
-export const DescriptionPanel = ({ isOpen }: DescriptionPanelProps) => {
+export const DescriptionPanel = ({ isOpen, generatedImage, usedPrompt }: DescriptionPanelProps) => {
   const [copied, setCopied] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   
@@ -27,12 +29,66 @@ export const DescriptionPanel = ({ isOpen }: DescriptionPanelProps) => {
     captions: { ig: string; tt: string };
     altText: string;
   } | null>(null);
+  
+  // Description state
+  const [description, setDescription] = useState<string>("");
 
   const handleCopy = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
     setCopied(id);
     toast.success("Panoya kopyalandı!");
     setTimeout(() => setCopied(null), 2000);
+  };
+
+  const handleDownload = () => {
+    if (!generatedImage) return;
+    
+    const link = document.createElement('a');
+    link.href = generatedImage;
+    link.download = `fotoraf-output-${Date.now()}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success("Görsel indiriliyor!");
+  };
+
+  const handleGenerateDescription = async () => {
+    if (!productTitle.trim() && !usedPrompt) {
+      toast.error("Lütfen ürün başlığı girin veya bir arka plan oluşturun");
+      return;
+    }
+
+    setIsGenerating(true);
+    const loadingToast = toast.loading("Ürün açıklaması oluşturuluyor...");
+
+    try {
+      const features = productFeatures
+        .split("\n")
+        .map(f => f.trim())
+        .filter(f => f.length > 0);
+
+      // Eğer usedPrompt varsa, onu başlık olarak kullan
+      const titleToUse = productTitle.trim() || usedPrompt || "Ürün";
+
+      const result = await generateDescription({
+        title: titleToUse,
+        features: features.length > 0 ? features : undefined,
+        industry: industry.trim() || undefined,
+        tone: 'concise',
+        language: 'tr',
+      });
+
+      setDescription(result.description);
+      toast.success("Ürün açıklaması başarıyla oluşturuldu!", { id: loadingToast });
+    } catch (error) {
+      console.error("Error generating description:", error);
+      toast.error(
+        error instanceof Error ? error.message : "Açıklama oluşturma başarısız",
+        { id: loadingToast }
+      );
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleGenerate = async () => {
@@ -81,11 +137,103 @@ export const DescriptionPanel = ({ isOpen }: DescriptionPanelProps) => {
             <Sparkles className="w-5 h-5 text-secondary" />
           </div>
           <div>
-            <h2 className="text-xl font-bold">Pazarlama Kiti</h2>
+            <h2 className="text-xl font-bold">Ürün Açıklaması & Pazarlama</h2>
             <p className="text-sm text-muted-foreground">AI ile ürün içerikleri oluştur</p>
           </div>
         </div>
       </div>
+
+      {/* Oluşturulan Görsel ve Açıklama */}
+      {generatedImage && (
+        <div className="mb-6 space-y-4">
+          <div className="relative group">
+            <img 
+              src={generatedImage} 
+              alt="Oluşturulan görsel" 
+              className="w-full rounded-xl border border-border"
+            />
+            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <Button
+                size="icon"
+                variant="secondary"
+                onClick={handleDownload}
+                className="shadow-lg"
+              >
+                <Download className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+
+          {description && (
+            <div className="p-4 bg-gradient-to-br from-primary/5 to-primary/10 rounded-xl border border-primary/20">
+              <div className="flex items-start justify-between gap-4 mb-2">
+                <h3 className="font-semibold text-sm flex items-center gap-2">
+                  <FileText className="w-4 h-4" />
+                  Ürün Açıklaması
+                </h3>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => handleCopy(description, 'description')}
+                  className="shrink-0 h-8 w-8"
+                >
+                  {copied === 'description' ? (
+                    <Check className="w-4 h-4 text-primary" />
+                  ) : (
+                    <Copy className="w-4 h-4" />
+                  )}
+                </Button>
+              </div>
+              <p className="text-sm leading-relaxed">{description}</p>
+            </div>
+          )}
+
+          {usedPrompt && (
+            <p className="text-xs text-muted-foreground p-2 bg-muted/50 rounded">
+              <strong>Kullanılan prompt:</strong> {usedPrompt}
+            </p>
+          )}
+
+          <div className="flex gap-2">
+            <Button 
+              onClick={handleGenerateDescription}
+              disabled={isGenerating}
+              variant="outline"
+              className="flex-1"
+            >
+              {isGenerating ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Oluşturuluyor...
+                </>
+              ) : (
+                <>
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Yeni Açıklama Oluştur
+                </>
+              )}
+            </Button>
+            <Button 
+              onClick={handleDownload}
+              variant="outline"
+              size="icon"
+            >
+              <Download className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {!generatedImage && (
+        <div className="mb-6 p-4 bg-muted/50 rounded-xl border border-border">
+          <div className="flex items-center gap-3">
+            <ImageIcon className="w-5 h-5 text-muted-foreground" />
+            <span className="text-sm text-muted-foreground">
+              Önce bir arka plan oluşturun
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* Form */}
       {!marketingKit && (
@@ -296,9 +444,11 @@ export const DescriptionPanel = ({ isOpen }: DescriptionPanelProps) => {
             <FileText className="w-4 h-4 text-primary" />
           </div>
           <div className="text-sm">
-            <p className="font-medium mb-1">Tek Tıkla Pazarlama Kiti</p>
+            <p className="font-medium mb-1">AI Destekli İçerik Üretimi</p>
             <p className="text-muted-foreground text-xs">
-              GPT-4o-mini ile slogan, özellikler, hashtagler, sosyal medya içerikleri ve erişilebilirlik metni oluşturulur (~2-5 saniye)
+              {generatedImage 
+                ? "Oluşturulan görseliniz için otomatik açıklama oluşturuldu. Pazarlama kiti için aşağıdaki formu kullanabilirsiniz. (~2-5 saniye)" 
+                : "GPT-4o-mini ile ürün açıklaması, slogan, özellikler, hashtagler, sosyal medya içerikleri ve erişilebilirlik metni oluşturulur (~2-5 saniye)"}
             </p>
           </div>
         </div>

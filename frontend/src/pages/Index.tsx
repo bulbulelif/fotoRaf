@@ -23,6 +23,8 @@ const Index = () => {
   const [uploadedPreview, setUploadedPreview] = useState<string | null>(null);
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+  const [usedPrompt, setUsedPrompt] = useState<string>("");
 
   const handleUpload = async (file: File) => {
     setUploadedFile(file);
@@ -77,16 +79,16 @@ const Index = () => {
             <div className="text-center space-y-4 mb-16 animate-fade-in">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary/10 rounded-full border border-secondary/20">
                 <Sparkles className="w-4 h-4 text-secondary" />
-                <span className="text-sm font-medium text-secondary">Gallery</span>
+                <span className="text-sm font-medium text-secondary">Galeri</span>
               </div>
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
-                See Our Work in
+                İşimizi
                 <span className="block bg-gradient-primary bg-clip-text text-transparent">
-                  Action
+                  Eylemde Görün
                 </span>
               </h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Experience the magic of AI-powered photo transformation
+                Yapay zeka destekli fotoğraf dönüşümünün büyüsünü deneyimleyin
               </p>
             </div>
             <div className="h-[600px] w-full">
@@ -159,8 +161,16 @@ const Index = () => {
               isOpen={currentStep === "background"} 
               uploadedImage={uploadedPreview}
               uploadedImageUrl={uploadedUrl || undefined}
+              onGenerated={(imageUrl, prompt) => {
+                setGeneratedImage(imageUrl);
+                setUsedPrompt(prompt);
+              }}
             />
-            <DescriptionPanel isOpen={currentStep === "description"} />
+            <DescriptionPanel 
+              isOpen={currentStep === "description"}
+              generatedImage={generatedImage}
+              usedPrompt={usedPrompt}
+            />
           </div>
 
           {/* Right panel - Export */}
@@ -178,7 +188,7 @@ const Index = () => {
               disabled={(!uploadedFile && currentStep === "upload") || isUploading}
               className="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-8"
             >
-              {isUploading ? "Yükleniyor..." : `Continue to ${steps[currentStepIndex + 1]}`}
+              {isUploading ? "Yükleniyor..." : `${steps[currentStepIndex + 1] === 'background' ? 'Arka Plan' : steps[currentStepIndex + 1] === 'description' ? 'Açıklama' : 'Dışa Aktarım'} Adımına Devam Et`}
             </Button>
           </div>
         )}

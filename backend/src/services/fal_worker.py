@@ -313,6 +313,17 @@ def main():
         help="Optional: Custom styles as JSON array"
     )
     
+    # upload-file
+    upload_parser = subparsers.add_parser(
+        "upload-file",
+        help="Upload a local file to FAL CDN"
+    )
+    upload_parser.add_argument(
+        "--file_path",
+        required=True,
+        help="Local file path to upload"
+    )
+    
     args = parser.parse_args()
     
     # Load .env if specified and exists
@@ -425,6 +436,14 @@ def main():
                 categories=categories,
                 styles=styles
             )
+        
+        elif args.command == "upload-file":
+            # Upload local file to FAL CDN
+            url = client.upload_file(args.file_path)
+            result = {
+                "url": url,
+                "error": None
+            }
         
         # Output JSON result to stdout
         if result is not None:

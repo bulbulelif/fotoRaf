@@ -4,36 +4,36 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 const testimonials = [
   {
-    name: "Sarah Chen",
-    role: "Shopify Store Owner",
-    initials: "SC",
+    name: "Ayşe Yılmaz",
+    role: "Trendyol Mağaza Sahibi",
+    initials: "AY",
     rating: 5,
-    text: "fotoRaf transformed my product listings overnight. Sales increased 40% in the first month. The AI backgrounds look incredible.",
-    metric: "+40% sales"
+    text: "fotoRaf ürün listelerimi bir gecede dönüştürdü. İlk ayda satışlar %40 arttı. Yapay zeka arka planları inanılmaz görünüyor.",
+    metric: "+%40 satış"
   },
   {
-    name: "Marcus Rodriguez",
-    role: "Amazon Seller",
-    initials: "MR",
+    name: "Mehmet Demir",
+    role: "Amazon Satıcısı",
+    initials: "MD",
     rating: 5,
-    text: "I was spending $500/month on product photography. Now I do it myself in minutes with better results. This tool paid for itself instantly.",
-    metric: "$6K saved/year"
+    text: "Ürün fotoğrafçılığına ayda 15.000 TL harcıyordum. Şimdi kendim dakikalar içinde daha iyi sonuçlar alıyorum. Bu araç maliyetini anında geri çıkardı.",
+    metric: "Yılda 180K TL tasarruf"
   },
   {
-    name: "Emily Parker",
-    role: "Etsy Entrepreneur",
-    initials: "EP",
+    name: "Elif Kaya",
+    role: "E-ticaret Girişimcisi",
+    initials: "EK",
     rating: 5,
-    text: "The marketing copy generator is genius. It understands my brand voice perfectly and writes descriptions that actually convert.",
-    metric: "3x faster workflow"
+    text: "Pazarlama metni oluşturucu dahiyane. Marka sesimi mükemmel anlıyor ve gerçekten dönüşüm sağlayan açıklamalar yazıyor.",
+    metric: "3 kat daha hızlı iş akışı"
   }
 ];
 
 const stats = [
-  { value: "50K+", label: "Photos Generated" },
-  { value: "2,500+", label: "Active Sellers" },
-  { value: "4.9/5", label: "Average Rating" },
-  { value: "98%", label: "Would Recommend" }
+  { value: "50K+", label: "Oluşturulan Fotoğraf" },
+  { value: "2,500+", label: "Aktif Satıcı" },
+  { value: "4.9/5", label: "Ortalama Puan" },
+  { value: "%98", label: "Tavsiye Eder" }
 ];
 
 export const SocialProof = () => {
@@ -61,13 +61,13 @@ export const SocialProof = () => {
         {/* Testimonials header */}
         <div className="text-center space-y-4 mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
-            Loved by E-Commerce
+            E-Ticaret Satıcılarının
             <span className="block bg-gradient-primary bg-clip-text text-transparent">
-              Sellers Worldwide
+              Favorisi
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Real stories from sellers who transformed their product photography
+            Ürün fotoğrafçılığını dönüştüren satıcılardan gerçek hikayeler
           </p>
         </div>
 

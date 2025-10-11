@@ -389,16 +389,13 @@ class FalClient:
             }
         """
         # Use FAL's nano-banana/edit model for image-to-image (product preservation)
+        # EXACTLY like backgroundGeneration.py - no prompt modification
         try:
-            # Build prompt for background replacement ONLY
-            # CRITICAL: Using /edit endpoint which is specifically designed to preserve the subject
-            full_prompt = f"Change only the background to: {prompt}. Keep the product exactly as it is in the original image."
-            
-            # Build arguments for nano-banana/edit (image-to-image)
-            # This endpoint is specifically designed for editing, not generation
+            # Use the prompt directly as provided (already formatted by GPT or user)
+            # The /edit endpoint preserves the product automatically
             arguments = {
-                "prompt": full_prompt,
-                "image_urls": [image_url]  # Note: image_urls (plural) for /edit endpoint
+                "prompt": prompt,  # Use prompt directly, no wrapping
+                "image_urls": [image_url]
             }
             
             # Queue update callback for logs
@@ -407,8 +404,7 @@ class FalClient:
                     for log in update.logs:
                         print(f"[nano-banana/edit] {log.get('message', '')}", file=sys.stderr)
             
-            # Use fal_client.subscribe for synchronous call with logs
-            # Using nano-banana/edit endpoint (same as backgroundGeneration.py)
+            # Use fal_client.subscribe - same as backgroundGeneration.py
             result = fal_client.subscribe(
                 "fal-ai/nano-banana/edit",
                 arguments=arguments,
@@ -435,16 +431,16 @@ class FalClient:
         self,
         image_url: str,
         *,
-        model: str = "google/gemini-2.5-pro",
+        model: str = "google/gemini-2.5-flash",
         temperature: float = 0.3
     ) -> dict:
         """
         Analyzes product image and returns 9-category classification.
-        Uses multimodal vision (Enterprise endpoint) with Gemini 2.5 Pro.
+        Uses multimodal vision (Enterprise endpoint) with Gemini 2.5 Flash.
         
         Args:
             image_url: URL of the product image to analyze
-            model: Vision model to use (default: "google/gemini-2.5-pro")
+            model: Vision model to use (default: "google/gemini-2.5-flash")
             temperature: Sampling temperature (default: 0.3)
         
         Returns:
@@ -590,12 +586,11 @@ Generate a detailed, professional image generation prompt for an image-to-image 
 
 The style type is: {style_type}
 
-CRITICAL Requirements:
-- The prompt must EMPHASIZE: "DO NOT CHANGE THE PRODUCT. Keep the original product exactly as shown."
-- The prompt must be specific about ONLY replacing the background
-- The prompt must preserve product details, colors, and features
+Requirements:
+- The prompt must START with "Change only the background to..."
+- The prompt must be specific about keeping the original product unchanged
 - The prompt must be suitable for e-commerce photography
-- The prompt should be creative and detailed about the BACKGROUND only
+- The prompt should be creative and detailed
 - The prompt should match the product's categories and the requested style type
 - Length: 2-3 sentences maximum
 

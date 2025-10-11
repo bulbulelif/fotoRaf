@@ -97,16 +97,22 @@ Just output the refined prompt, nothing else.`,
             // Local dosya yolunu al
             const urlPath = new URL(inputImageUrl).pathname;
             const localPath = `${process.cwd()}${urlPath}`;
-            // FAL'a yükle
-            const { stdout: uploadOutput } = await exec('python3', [
-                '-c',
-                `import fal_client; print(fal_client.upload_file('${localPath}'))`
+            // FAL'a yükle - Python script olarak daha güvenli
+            const { stdout: uploadOutput, stderr: uploadError } = await exec('python3', [
+                'src/services/fal_worker.py',
+                'upload-file',
+                '--file_path', localPath
             ], {
                 timeout: 30000,
                 cwd: process.cwd(),
                 env: { ...process.env }
             });
-            falImageUrl = uploadOutput.trim();
+            const uploadResult = JSON.parse(uploadOutput);
+            if (uploadResult.error) {
+                req.log.error({ err: uploadResult.error }, 'FAL upload failed');
+                return reply.code(502).send({ error: 'upload_failed', detail: uploadResult.error });
+            }
+            falImageUrl = uploadResult.url;
             req.log.info({ falImageUrl }, 'Image uploaded to FAL');
         }
         // Background replacement çağır

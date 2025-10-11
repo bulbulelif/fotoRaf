@@ -4,26 +4,26 @@ import { Card } from "@/components/ui/card";
 const features = [
   {
     icon: Wand2,
-    title: "AI Background Generation",
-    description: "Describe your perfect scene or just upload your image and let us handle it.",
+    title: "Yapay Zeka ile Arka Plan Oluşturma",
+    description: "Mükemmel sahnenizi tanımlayın veya sadece görselinizi yükleyin, gerisini bize bırakın.",
     color: "text-secondary"
   },
   {
     icon: Sparkles,
-    title: "Smart Object Removal",
-    description: "Automatically remove backgrounds, shadows, and distractions. Get clean, professional product shots instantly.",
+    title: "Akıllı Nesne Temizleme",
+    description: "Arka planları, gölgeleri ve dikkat dağıtıcı unsurları otomatik olarak kaldırın. Anında temiz, profesyonel ürün çekimleri elde edin.",
     color: "text-primary"
   },
   {
     icon: FileText,
-    title: "Marketing Copy Generator",
-    description: "Generate compelling product descriptions, titles, and ad copy tailored to your brand voice and audience.",
+    title: "Pazarlama Metni Oluşturucu",
+    description: "Marka sesinize ve hedef kitlenize özel etkileyici ürün açıklamaları, başlıklar ve reklam metinleri oluşturun.",
     color: "text-secondary"
   },
   {
     icon: Download,
-    title: "Export for Any Platform",
-    description: "Download optimized images for Trendyol,Amazon, Shopify, Instagram, or print.",
+    title: "Her Platform İçin Dışa Aktar",
+    description: "Trendyol, Amazon, Shopify, Instagram veya baskı için optimize edilmiş görselleri indirin.",
     color: "text-primary"
   }
 ];
@@ -35,16 +35,16 @@ export const Features = () => {
         <div className="text-center space-y-4 mb-16 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary/10 rounded-full border border-secondary/20 mt-6">
             <Sparkles className="w-4 h-4 text-secondary" />
-            <span className="text-sm font-medium text-secondary">Features</span>
+            <span className="text-sm font-medium text-secondary">Özellikler</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
-            Everything You Need to
+            Online Dünyada Öne Çıkmak İçin
             <span className="block bg-gradient-primary bg-clip-text text-transparent">
-              Stand Out Online
+              İhtiyacınız Olan Her Şey
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Professional photo editing and marketing tools designed specifically for e-commerce sellers
+            E-ticaret satıcıları için özel olarak tasarlanmış profesyonel fotoğraf düzenleme ve pazarlama araçları
           </p>
         </div>
 

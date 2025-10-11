@@ -12,7 +12,7 @@ export const Hero = ({ onGetStarted }: { onGetStarted: () => void }) => {
         <div className="text-center space-y-8 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary/10 rounded-full border border-secondary/20">
             <Sparkles className="w-4 h-4 text-secondary" />
-            <span className="text-sm font-medium text-secondary">Powered by AI</span>
+            <span className="text-sm font-medium text-secondary">Yapay Zeka Destekli</span>
           </div>
           
           <div className="flex flex-col items-center gap-4">
@@ -22,12 +22,12 @@ export const Hero = ({ onGetStarted }: { onGetStarted: () => void }) => {
               className="h-48 md:h-64 w-auto"
             />
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-              Product Photos That Sell
+              Satış Yapan Ürün Fotoğrafları
             </h1>
           </div>
           
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Transform ordinary product shots into studio-quality images with AI-powered backgrounds and instant marketing copy. Built for e-commerce sellers who refuse to compromise on quality.
+            Sıradan ürün çekimlerinizi yapay zeka destekli arka planlar ve anında pazarlama metinleri ile stüdyo kalitesinde görsellere dönüştürün. Kaliteden ödün vermeyen e-ticaret satıcıları için tasarlandı.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
@@ -36,7 +36,7 @@ export const Hero = ({ onGetStarted }: { onGetStarted: () => void }) => {
               className="group bg-gradient-primary hover:shadow-glow transition-all duration-300 text-lg px-8 py-6"
               onClick={onGetStarted}
             >
-              Get Started Free
+              Ücretsiz Başla
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Button>
             <Button 
@@ -45,22 +45,22 @@ export const Hero = ({ onGetStarted }: { onGetStarted: () => void }) => {
               className="text-lg px-8 py-6 border-2"
               onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
             >
-              See How It Works
+              Nasıl Çalışır?
             </Button>
           </div>
           
           <div className="pt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
-              <span>Free to start</span>
+              <span>Ücretsiz başlayın</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
-              <span>Studio quality in seconds</span>
+              <span>Saniyeler içinde stüdyo kalitesi</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
-              <span>No design skills needed</span>
+              <span>Tasarım bilgisi gerektirmez</span>
             </div>
           </div>
         </div>

@@ -4,31 +4,31 @@ import { Card } from "@/components/ui/card";
 const benefits = [
   {
     icon: Clock,
-    title: "Save 10+ Hours Per Week",
-    description: "Stop wrestling with Photoshop. What used to take hours now takes seconds.",
+    title: "Haftada 10+ Saat Tasarruf",
+    description: "Photoshop ile uğraşmayı bırakın. Saatler süren işler artık saniyeler içinde halloluyor.",
     stat: "95%",
-    statLabel: "faster than manual editing"
+    statLabel: "manuel düzenlemeden daha hızlı"
   },
   {
     icon: TrendingUp,
-    title: "Boost Conversions",
-    description: "Professional imagery increases click-through rates and customer trust dramatically.",
+    title: "Dönüşümleri Artırın",
+    description: "Profesyonel görseller tıklama oranlarını ve müşteri güvenini önemli ölçüde artırır.",
     stat: "3.5x",
-    statLabel: "higher engagement"
+    statLabel: "daha yüksek etkileşim"
   },
   {
     icon: Palette,
-    title: "Unlimited Creativity",
-    description: "Test unlimited variations and styles. Find what resonates with your audience.",
+    title: "Sınırsız Yaratıcılık",
+    description: "Sınırsız varyasyon ve stilleri test edin. Hedef kitlenizde yankı uyandıranı bulun.",
     stat: "∞",
-    statLabel: "design possibilities"
+    statLabel: "tasarım imkanı"
   },
   {
     icon: Shield,
-    title: "Enterprise Security",
-    description: "Your images and data are encrypted and protected. GDPR compliant infrastructure.",
+    title: "Kurumsal Güvenlik",
+    description: "Görselleriniz ve verileriniz şifrelenir ve korunur. KVKK uyumlu altyapı.",
     stat: "100%",
-    statLabel: "data privacy"
+    statLabel: "veri gizliliği"
   }
 ];
 
@@ -38,13 +38,13 @@ export const Benefits = () => {
       <div className="container max-w-6xl">
         <div className="text-center space-y-4 mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
-            Why E-Commerce Sellers
+            E-Ticaret Satıcıları Neden
             <span className="block bg-gradient-primary bg-clip-text text-transparent">
-              Choose fotoRaf
+              fotoRaf'ı Tercih Ediyor
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Join thousands of sellers who've transformed their product photography workflow
+            Ürün fotoğrafçılığı iş akışlarını dönüştüren binlerce satıcıya katılın
           </p>
         </div>
 

@@ -12,19 +12,19 @@ export const FinalCTA = ({ onGetStarted }: { onGetStarted: () => void }) => {
         <div className="text-center space-y-8 animate-fade-in">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary/10 rounded-full border border-secondary/20">
             <Sparkles className="w-4 h-4 text-secondary" />
-            <span className="text-sm font-medium text-secondary">Start Free Today</span>
+            <span className="text-sm font-medium text-secondary">Bugün Ücretsiz Başlayın</span>
           </div>
 
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight">
-            Ready to Transform Your
+            Ürün Fotoğraflarınızı Dönüştürmeye
             <span className="block bg-gradient-primary bg-clip-text text-transparent">
-              Product Photography?
+              Hazır mısınız?
             </span>
           </h2>
 
           <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Join thousands of e-commerce sellers creating studio-quality images in seconds. 
-            No credit card required to start.
+            Saniyeler içinde stüdyo kalitesinde görseller oluşturan binlerce e-ticaret satıcısına katılın. 
+            Başlamak için kredi kartı gerekmez.
           </p>
 
           <div className="flex justify-center items-center pt-4">
@@ -33,7 +33,7 @@ export const FinalCTA = ({ onGetStarted }: { onGetStarted: () => void }) => {
               className="group bg-gradient-primary hover:shadow-glow transition-all duration-300 text-lg px-8 py-6"
               onClick={onGetStarted}
             >
-              Start Creating Free
+              Ücretsiz Oluşturmaya Başla
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>
@@ -41,15 +41,15 @@ export const FinalCTA = ({ onGetStarted }: { onGetStarted: () => void }) => {
           <div className="pt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-secondary" />
-              <span>Free forever plan available</span>
+              <span>Sonsuza kadar ücretsiz plan mevcut</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-secondary" />
-              <span>Upgrade anytime</span>
+              <span>İstediğiniz zaman yükseltin</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-secondary" />
-              <span>Cancel whenever you want</span>
+              <span>İstediğiniz zaman iptal edin</span>
             </div>
           </div>
         </div>
