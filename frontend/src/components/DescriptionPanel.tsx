@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { FileText, Copy, RefreshCw, Check, Loader2, Sparkles, Download, Image as ImageIcon } from "lucide-react";
 import { toast } from "sonner";
@@ -32,6 +32,9 @@ export const DescriptionPanel = ({ isOpen, generatedImage, usedPrompt }: Descrip
   
   // Description state
   const [description, setDescription] = useState<string>("");
+  
+  // Track last generated image to prevent duplicate calls
+  const lastGeneratedImageRef = useRef<string | null>(null);
 
   const handleCopy = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
@@ -52,7 +55,7 @@ export const DescriptionPanel = ({ isOpen, generatedImage, usedPrompt }: Descrip
     toast.success("Görsel indiriliyor!");
   };
 
-  const handleGenerateDescription = async () => {
+  const handleGenerateDescription = useCallback(async () => {
     if (!productTitle.trim() && !usedPrompt) {
       toast.error("Lütfen ürün başlığı girin veya bir arka plan oluşturun");
       return;
@@ -78,7 +81,12 @@ export const DescriptionPanel = ({ isOpen, generatedImage, usedPrompt }: Descrip
         language: 'tr',
       });
 
+      console.log('Description API result:', result);
+      console.log('Description text:', result.description);
+      
       setDescription(result.description);
+      console.log('Description state updated');
+      
       toast.success("Ürün açıklaması başarıyla oluşturuldu!", { id: loadingToast });
     } catch (error) {
       console.error("Error generating description:", error);
@@ -89,7 +97,37 @@ export const DescriptionPanel = ({ isOpen, generatedImage, usedPrompt }: Descrip
     } finally {
       setIsGenerating(false);
     }
-  };
+  }, [productTitle, productFeatures, industry, usedPrompt]);
+
+  // Description değişikliklerini izle
+  useEffect(() => {
+    console.log('📝 Description state changed:', description);
+  }, [description]);
+
+  // Otomatik açıklama oluşturma - yeni görsel geldiğinde
+  useEffect(() => {
+    // Yeni bir görsel geldi mi kontrol et
+    if (
+      generatedImage && 
+      usedPrompt && 
+      isOpen && 
+      !isGenerating &&
+      generatedImage !== lastGeneratedImageRef.current
+    ) {
+      console.log('🎨 New image detected, auto-generating description with:', { 
+        generatedImage, 
+        usedPrompt,
+        previousImage: lastGeneratedImageRef.current 
+      });
+      
+      // Bu görseli işaretleyelim
+      lastGeneratedImageRef.current = generatedImage;
+      
+      // Description'ı sıfırla ve yenisini oluştur
+      setDescription("");
+      handleGenerateDescription();
+    }
+  }, [generatedImage, usedPrompt, isOpen, isGenerating, handleGenerateDescription]);
 
   const handleGenerate = async () => {
     if (!productTitle.trim()) {
@@ -164,29 +202,34 @@ export const DescriptionPanel = ({ isOpen, generatedImage, usedPrompt }: Descrip
             </div>
           </div>
 
-          {description && (
-            <div className="p-4 bg-gradient-to-br from-primary/5 to-primary/10 rounded-xl border border-primary/20">
-              <div className="flex items-start justify-between gap-4 mb-2">
-                <h3 className="font-semibold text-sm flex items-center gap-2">
-                  <FileText className="w-4 h-4" />
-                  Ürün Açıklaması
-                </h3>
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  onClick={() => handleCopy(description, 'description')}
-                  className="shrink-0 h-8 w-8"
-                >
-                  {copied === 'description' ? (
-                    <Check className="w-4 h-4 text-primary" />
-                  ) : (
-                    <Copy className="w-4 h-4" />
-                  )}
-                </Button>
-              </div>
-              <p className="text-sm leading-relaxed">{description}</p>
+          <div className="p-4 bg-gradient-to-br from-primary/5 to-primary/10 rounded-xl border border-primary/20">
+            <div className="flex items-start justify-between gap-4 mb-2">
+              <h3 className="font-semibold text-sm flex items-center gap-2">
+                <FileText className="w-4 h-4" />
+                Ürün Açıklaması
+              </h3>
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() => handleCopy(description, 'description')}
+                className="shrink-0 h-8 w-8"
+                disabled={!description}
+              >
+                {copied === 'description' ? (
+                  <Check className="w-4 h-4 text-primary" />
+                ) : (
+                  <Copy className="w-4 h-4" />
+                )}
+              </Button>
             </div>
-          )}
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder={isGenerating ? "Açıklama oluşturuluyor..." : "Açıklama burada görünecek..."}
+              className="min-h-[120px] text-sm"
+              disabled={isGenerating}
+            />
+          </div>
 
           {usedPrompt && (
             <p className="text-xs text-muted-foreground p-2 bg-muted/50 rounded">

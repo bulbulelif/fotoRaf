@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Download, Share2, ShoppingCart, Image as ImageIcon } from "lucide-react";
+import { Download, Share2, ShoppingCart, Image as ImageIcon, Store } from "lucide-react";
 import { toast } from "sonner";
 
 interface ExportPanelProps {
@@ -36,6 +36,14 @@ export const ExportPanel = ({ isOpen }: ExportPanelProps) => {
     // Simulate download
     setTimeout(() => {
       toast.success("İndirme tamamlandı!");
+    }, 1500);
+  };
+
+  const handleTrendyolPublish = () => {
+    toast.success("Trendyol'a bağlanılıyor...");
+    // Simulate Trendyol publish
+    setTimeout(() => {
+      toast.success("Ürün Trendyol'da yayınlanmaya hazır!");
     }, 1500);
   };
 
@@ -86,14 +94,23 @@ export const ExportPanel = ({ isOpen }: ExportPanelProps) => {
       <div className="mt-6 p-6 bg-gradient-secondary rounded-xl text-secondary-foreground">
         <div className="flex items-start gap-3">
           <ShoppingCart className="w-5 h-5 shrink-0 mt-1" />
-          <div>
+          <div className="flex-1">
             <p className="font-bold mb-1">Mağazanıza eklemeye hazır mısınız?</p>
             <p className="text-sm opacity-90 mb-4">
               E-ticaret platformunuzu bağlayın ve doğrudan ürün kataloğunuza yayınlayın.
             </p>
-            <Button variant="secondary" className="bg-white/20 hover:bg-white/30 text-secondary-foreground border-white/30">
-              Mağazayı Bağla
-            </Button>
+            <div className="flex flex-wrap gap-3">
+              <Button 
+                onClick={handleTrendyolPublish}
+                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold"
+              >
+                <Store className="w-4 h-4 mr-2" />
+                Trendyol'da yayınla!
+              </Button>
+              <Button variant="secondary" className="bg-white/20 hover:bg-white/30 text-secondary-foreground border-white/30">
+                Mağazayı Bağla
+              </Button>
+            </div>
           </div>
         </div>
       </div>

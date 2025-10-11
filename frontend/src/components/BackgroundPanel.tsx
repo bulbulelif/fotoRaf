@@ -187,7 +187,7 @@ export const BackgroundPanel = ({ isOpen, uploadedImage, uploadedImageUrl, onGen
         <div className="mb-6">
           <img 
             src={generatedImage} 
-            alt="Generated background" 
+            alt="Oluşturulan arka plan" 
             className="w-full rounded-xl border border-border"
           />
           {usedPrompt && (
