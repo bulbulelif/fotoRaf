@@ -154,6 +154,131 @@ curl -X POST http://localhost:3000/v1/descriptions/generate \
 
 ---
 
+## 3. One-Click Marketing Kit
+
+Generate a complete marketing kit for any product in a single API call. Perfect for e-commerce listings, social media, and accessibility.
+
+### Endpoint
+```
+POST /v1/marketing/kit
+```
+
+### Request Body
+```json
+{
+  "title": "Ergonomik Seramik Kupa 300ml",              // Required: Product title
+  "features": [                                          // Optional: Product features
+    "ergonomik sap",
+    "bulaşık makinesinde yıkanabilir",
+    "ısıyı iyi muhafaza eder"
+  ],
+  "industry": "housewares",                              // Optional: Industry category
+  "tone": "concise",                                     // Optional: "concise" or "detailed" (default: "concise")
+  "language": "tr",                                      // Optional: "tr" or "en" (default: "tr")
+  "maxTokens": 300,                                      // Optional: 80-400 (default: 300)
+  "temperature": 0.7                                     // Optional: 0-1 (default: 0.7)
+}
+```
+
+### Response
+```json
+{
+  "language": "tr",
+  "tone": "concise",
+  "model": "openai/gpt-4o-mini",
+  "kit": {
+    "tagline": "Günün her anında konforlu ve sıcak içecek deneyimi",
+    "bullets": [
+      "Ergonomik sap tasarımı sayesinde uzun süreli kullanımda bile rahatlık",
+      "Bulaşık makinesinde yıkanabilir özelliği ile pratik temizlik",
+      "Seramik yapısı ile sıcaklığı uzun süre muhafaza eder"
+    ],
+    "hashtags": [
+      "#seramikkupa",
+      "#ergonomik",
+      "#pratik",
+      "#evaksesuarı",
+      "#kahvekeyfi",
+      "#çaykeyfi"
+    ],
+    "captions": {
+      "ig": "Ergonomik Seramik Kupa ile her yudum keyif! ☕ Bulaşık makinesinde yıkanabilir, sıcaklığı uzun süre korur. #seramikkupa #evaksesuarı",
+      "tt": "Bu kupa tam sana göre! 🔥 Ergonomik, pratik ve şık. #seramikkupa #kahvekeyfi"
+    },
+    "altText": "300ml hacminde beyaz seramik kupa, ergonomik sap tasarımlı"
+  },
+  "meta": {
+    "maxTokens": 300,
+    "temperature": 0.7,
+    "reasoning": null
+  }
+}
+```
+
+### Example - Turkish Concise Kit
+```bash
+curl -X POST http://localhost:3000/v1/marketing/kit \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Ergonomik Seramik Kupa 300ml",
+    "features": ["ergonomik sap","bulaşık makinesinde yıkanabilir","ısıyı iyi muhafaza eder"],
+    "industry": "housewares",
+    "tone": "concise",
+    "language": "tr"
+  }' | jq '.'
+```
+
+### Example - English Concise Kit
+```bash
+curl -X POST http://localhost:3000/v1/marketing/kit \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Ergonomic Ceramic Mug 300ml",
+    "features": ["ergonomic handle","dishwasher safe","great heat retention"],
+    "industry": "housewares",
+    "tone": "concise",
+    "language": "en"
+  }' | jq '.'
+```
+
+### Example - Turkish Detailed Kit
+```bash
+curl -X POST http://localhost:3000/v1/marketing/kit \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Akıllı Bluetooth Kulaklık X500",
+    "features": ["aktif gürültü engelleme","40 saat pil ömrü","hızlı şarj"],
+    "industry": "electronics",
+    "tone": "detailed",
+    "language": "tr",
+    "maxTokens": 250
+  }' | jq '.'
+```
+
+### Features
+- ✅ One-click complete marketing kit generation
+- ✅ Includes tagline, bullets, hashtags, social media captions, and alt text
+- ✅ Supports Turkish and English
+- ✅ Two tone options: concise or detailed
+- ✅ SEO-friendly, realistic copy with feature→benefit approach
+- ✅ Platform-agnostic hashtags with # prefix
+- ✅ Accessibility-focused alt text (objective descriptions)
+- ✅ Configurable creativity (temperature) and length (maxTokens)
+- ✅ Response time: ~2-5 seconds
+
+### Kit Contents
+
+| Field | Description | Count/Length |
+|-------|-------------|--------------|
+| `tagline` | Clear, compelling 1-sentence tagline | 1 sentence |
+| `bullets` | Feature→benefit focused bullet points | 3-5 items |
+| `hashtags` | Platform-agnostic tags with # prefix | 6-10 tags |
+| `captions.ig` | Instagram-optimized caption | 2-3 sentences (concise)<br>4-5 sentences (detailed) |
+| `captions.tt` | TikTok-optimized short & energetic caption | 1-2 sentences (concise)<br>2-3 sentences (detailed) |
+| `altText` | Objective image description for accessibility | 1-2 sentences |
+
+---
+
 ## Error Responses
 
 ### 400 Bad Request - Validation Error
