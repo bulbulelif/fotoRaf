@@ -1,0 +1,5 @@
+# FAL Python Client Dependencies
+fal-client>=0.5.0
+requests>=2.32.3
+python-dotenv>=1.0.1
+
