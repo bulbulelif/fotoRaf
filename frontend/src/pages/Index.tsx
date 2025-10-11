@@ -9,6 +9,7 @@ import { UploadPanel } from "@/components/UploadPanel";
 import { BackgroundPanel } from "@/components/BackgroundPanel";
 import { DescriptionPanel } from "@/components/DescriptionPanel";
 import { ExportPanel } from "@/components/ExportPanel";
+import CircularGallery from "@/components/CircularGallery";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, Sparkles } from "lucide-react";
 
@@ -50,6 +51,28 @@ const Index = () => {
     return (
       <div className="min-h-screen">
         <Hero onGetStarted={() => setCurrentStep("upload")} />
+        <section className="py-24 px-6">
+          <div className="container max-w-6xl">
+            <div className="text-center space-y-4 mb-16 animate-fade-in">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary/10 rounded-full border border-secondary/20">
+                <Sparkles className="w-4 h-4 text-secondary" />
+                <span className="text-sm font-medium text-secondary">Gallery</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
+                See Our Work in
+                <span className="block bg-gradient-primary bg-clip-text text-transparent">
+                  Action
+                </span>
+              </h2>
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                Experience the magic of AI-powered photo transformation
+              </p>
+            </div>
+            <div className="h-[600px] w-full">
+              <CircularGallery />
+            </div>
+          </div>
+        </section>
         <Features />
         <HowItWorks />
         <FinalCTA onGetStarted={() => setCurrentStep("upload")} />

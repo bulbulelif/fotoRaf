@@ -4,7 +4,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@photos/*": ["./src/assets/photos/*"]
     },
     "noImplicitAny": false,
     "noUnusedParameters": false,
