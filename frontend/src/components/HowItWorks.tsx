@@ -11,13 +11,13 @@ const steps = [
     icon: Wand2,
     number: "02",
     title: "Choose Your Style",
-    description: "Select from curated backgrounds or describe your perfect scene in plain English."
+    description: "Describe your perfect scene or let us handle it."
   },
   {
     icon: Sparkles,
     number: "03",
     title: "Generate Copy",
-    description: "Let AI craft compelling product descriptions and marketing content that converts."
+    description: "Let fotoRaf craft compelling product descriptions and marketing content that converts."
   },
   {
     icon: Download,

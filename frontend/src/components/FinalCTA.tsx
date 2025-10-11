@@ -27,7 +27,7 @@ export const FinalCTA = ({ onGetStarted }: { onGetStarted: () => void }) => {
             No credit card required to start.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+          <div className="flex justify-center items-center pt-4">
             <Button 
               size="lg" 
               className="group bg-gradient-primary hover:shadow-glow transition-all duration-300 text-lg px-8 py-6"
@@ -35,14 +35,6 @@ export const FinalCTA = ({ onGetStarted }: { onGetStarted: () => void }) => {
             >
               Start Creating Free
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <Button 
-              size="lg" 
-              variant="ghost"
-              className="text-lg px-8 py-6"
-              onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              Learn More
             </Button>
           </div>
 

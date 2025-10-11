@@ -5,7 +5,7 @@ const features = [
   {
     icon: Wand2,
     title: "AI Background Generation",
-    description: "Transform plain product shots into stunning lifestyle images. Choose from endless styles or describe your perfect scene.",
+    description: "Describe your perfect scene or just upload your image and let us handle it.",
     color: "text-secondary"
   },
   {
@@ -23,7 +23,7 @@ const features = [
   {
     icon: Download,
     title: "Export for Any Platform",
-    description: "Download optimized images for Amazon, Shopify, Instagram, or print. Multiple sizes, formats, and ratios included.",
+    description: "Download optimized images for Trendyol,Amazon, Shopify, Instagram, or print.",
     color: "text-primary"
   }
 ];

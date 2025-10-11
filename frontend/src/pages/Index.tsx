@@ -3,7 +3,6 @@ import { Hero } from "@/components/Hero";
 import fotoRafLogo from "@/assets/fotoraf-logo.png";
 import { Features } from "@/components/Features";
 import { HowItWorks } from "@/components/HowItWorks";
-import { Benefits } from "@/components/Benefits";
 import { SocialProof } from "@/components/SocialProof";
 import { FinalCTA } from "@/components/FinalCTA";
 import { UploadPanel } from "@/components/UploadPanel";
@@ -53,8 +52,6 @@ const Index = () => {
         <Hero onGetStarted={() => setCurrentStep("upload")} />
         <Features />
         <HowItWorks />
-        <Benefits />
-        <SocialProof />
         <FinalCTA onGetStarted={() => setCurrentStep("upload")} />
       </div>
     );
