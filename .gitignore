@@ -1,1 +1,146 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+node_modules/
+/.pnp
+.pnp.js
+**/node_modules/
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ============================================================================
+# FotoRaf Project-Specific Ignores
+# ============================================================================
+
+# Environment variables (CRITICAL: Never commit API keys!)
+.env
+.env.*
+!.env.example
+agents/.env
 backend/.env
+backend/apps/api/.env
+backend/apps/mcp/.env
+frontend/.env
+# BUT allow .env.example files to be committed
+!**/.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+agents_env/
+venv/
+env/
+ENV/
+.venv
+
+# Node.js / TypeScript build outputs
+dist/
+**/dist/
+build/
+**/build/
+*.tsbuildinfo
+.turbo/
+# Compiled TypeScript files (keep source .ts files only)
+backend/**/*.js
+backend/**/*.d.ts
+backend/**/*.js.map
+!backend/**/*.config.js
+!backend/**/scripts/**/*.js
+
+# Logs
+*.log
+**/*.log
+backend/backend.log
+backend/backend_live.log
+backend/apps/api/backend.log
+backend/apps/api/final.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Database files (consider committing sample DB separately if needed)
+*.db
+*.sqlite
+*.sqlite3
+frontend/public/cities.db
+frontend/public/cities.db.backup
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Lock files (keep one, ignore others if using multiple package managers)
+# Using package-lock.json for npm, so ignore yarn and bun alternatives
+yarn.lock
+bun.lockb
+# Uncomment to ignore package-lock.json if using yarn or pnpm instead:
+# package-lock.json
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Test outputs
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Backup files
+*.backup
+*.bak
+*~
+*.tsx.backup
+*.ts.backup
+*.py.backup
+
+# OS files
+Thumbs.db
+
+# Uploaded files / Generated content
+backend/uploads/
+**/uploads/
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp
+!frontend/public/**/*.jpg
+!frontend/public/**/*.jpeg
+!frontend/public/**/*.png
+!frontend/public/**/*.gif
+!frontend/public/**/*.webp
+!frontend/src/assets/**/*.jpg
+!frontend/src/assets/**/*.jpeg
+!frontend/src/assets/**/*.png
+
+# Generated JSON outputs
+product_categories.json
+background_generation_results_*.json
+
+# Personal notes
+llms.txt

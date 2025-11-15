@@ -1,11 +1,11 @@
 # FAL Python Services
 
 Python wrapper for FAL AI services with advanced features:
-- 🎨 **Multimodal Vision**: Enterprise LLM endpoint with image analysis support
-- 📊 **Product Categorization**: 9-category AI-powered product classification
-- 🤖 **GPT-Powered Prompts**: Intelligent prompt generation for backgrounds
-- 🎭 **Multiple Styles**: Generate variations with different background styles
-- 🖼️ **Background Replacement**: Professional e-commerce product photography
+- **Multimodal Vision**: Enterprise LLM endpoint with image analysis support
+- **Product Categorization**: 9-category AI-powered product classification
+- **GPT-Powered Prompts**: Intelligent prompt generation for backgrounds
+- **Multiple Styles**: Generate variations with different background styles
+- **Background Replacement**: Professional e-commerce product photography
 
 ## Setup
 
@@ -514,9 +514,9 @@ python src/services/fal_service.py
 ```
 
 Expected output: 
-- ✓ Basic LLM completion test
-- ✓ Enterprise endpoint test
-- ✓ Background prompt generation test
+- Basic LLM completion test
+- Enterprise endpoint test
+- Background prompt generation test
 - JSON summary with all features
 
 ## Complete Workflow Example
@@ -530,12 +530,12 @@ client = FalClient()
 
 # 1. Upload product image
 image_url = client.upload_file("product.jpg")
-print(f"📷 Image uploaded: {image_url}")
+print(f"Image uploaded: {image_url}")
 
 # 2. Analyze product (9 categories)
 analysis = client.analyze_product_image(image_url)
 categories = analysis["categories"]
-print(f"📊 Product: {categories['main_product_type']} - {categories['subcategory']}")
+print(f"Product: {categories['main_product_type']} - {categories['subcategory']}")
 
 # 3. Generate multiple background variations
 result = client.generate_multiple_backgrounds(
@@ -543,7 +543,7 @@ result = client.generate_multiple_backgrounds(
     categories=categories
 )
 
-print(f"🎨 Generated {result['total_generated']} variations:")
+print(f"Generated {result['total_generated']} variations:")
 for img in result["images"]:
     print(f"  - {img['style_name']}: {img['image_url']}")
 
@@ -552,7 +552,7 @@ desc = client.any_llm_complete(
     prompt=f"Write a 2-sentence product description in Turkish for a {categories['subcategory']}",
     model="google/gemini-2.5-flash-lite"
 )
-print(f"✍️ Description: {desc['output']}")
+print(f"Description: {desc['output']}")
 ```
 
 This workflow:

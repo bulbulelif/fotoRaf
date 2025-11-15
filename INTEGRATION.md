@@ -1,8 +1,8 @@
-# FotoRaf - Backend & Frontend Entegrasyonu
+# fotoRaf - Backend & Frontend Entegrasyonu
 
-Backend ve frontend başarıyla entegre edildi! 🎉
+Backend ve frontend başarıyla entegre edildi!
 
-## 🏗️ Yapılan Değişiklikler
+## Yapılan Değişiklikler
 
 ### Backend
 
@@ -38,7 +38,7 @@ Backend ve frontend başarıyla entegre edildi! 🎉
    - **DescriptionPanel**: Backend'deki pazarlama kiti API'sine bağlandı
    - **Index.tsx**: Dosya yükleme ve state yönetimi güncellendi
 
-## 🚀 Çalıştırma
+## Çalıştırma
 
 ### Backend'i Başlatın
 
@@ -77,7 +77,7 @@ PORT=3000
 NODE_ENV=development
 ```
 
-## 📝 Kullanım Akışı
+## Kullanım Akışı
 
 1. **Görsel Yükleme**
    - Kullanıcı bir ürün görseli yükler
@@ -100,31 +100,31 @@ NODE_ENV=development
      - Alt text (erişilebilirlik)
    - Tüm içerikler tek tıkla kopyalanabilir (~2-5 saniye)
 
-## 🔧 API Dökümanları
+## API Dökümanları
 
 Detaylı API dökümanları için: `backend/API_DOCS.md`
 
-## 🎯 Özellikler
+## Özellikler
 
 ### Backend
-- ✅ CORS desteği
-- ✅ Dosya yükleme (max 10MB)
-- ✅ AI arka plan oluşturma
-- ✅ GPT-4o-mini ile prompt iyileştirme
-- ✅ Pazarlama içeriği oluşturma
-- ✅ Türkçe ve İngilizce dil desteği
+- CORS desteği
+- Dosya yükleme (max 10MB)
+- AI arka plan oluşturma
+- GPT-4o-mini ile prompt iyileştirme
+- Pazarlama içeriği oluşturma
+- Türkçe ve İngilizce dil desteği
 
 ### Frontend
-- ✅ Modern React + TypeScript
-- ✅ shadcn/ui bileşenleri
-- ✅ Sürükle-bırak dosya yükleme
-- ✅ Real-time önizleme
-- ✅ Loading durumları
-- ✅ Hata yönetimi
-- ✅ Toast bildirimleri
-- ✅ Responsive tasarım
+- Modern React + TypeScript
+- shadcn/ui bileşenleri
+- Sürükle-bırak dosya yükleme
+- Real-time önizleme
+- Loading durumları
+- Hata yönetimi
+- Toast bildirimleri
+- Responsive tasarım
 
-## 🐛 Sorun Giderme
+## Sorun Giderme
 
 ### Backend bağlantı hatası
 - Backend'in çalıştığından emin olun (`npm run dev`)
@@ -141,7 +141,7 @@ Detaylı API dökümanları için: `backend/API_DOCS.md`
 - İnternet bağlantınızı kontrol edin
 - Backend loglarını kontrol edin
 
-## 📦 Gereksinimler
+## Gereksinimler
 
 ### Backend
 - Node.js 18+
@@ -153,7 +153,7 @@ Detaylı API dökümanları için: `backend/API_DOCS.md`
 - Node.js 18+
 - Supabase hesabı (opsiyonel)
 
-## 🎨 Teknoloji Stack
+## Teknoloji Stack
 
 ### Backend
 - Fastify
@@ -172,5 +172,5 @@ Detaylı API dökümanları için: `backend/API_DOCS.md`
 
 ---
 
-Herhangi bir sorun yaşarsanız backend ve frontend loglarını kontrol edin! 🔍
+Herhangi bir sorun yaşarsanız backend ve frontend loglarını kontrol edin!
 

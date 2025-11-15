@@ -1,4 +1,4 @@
-# FotoRaf API Documentation
+# fotoRaf API Documentation
 
 ## Base URL
 ```
@@ -56,10 +56,10 @@ curl -X POST http://localhost:3000/v1/generate \
 ```
 
 ### Features
-- ✅ Auto-refines user prompts with GPT-4o-mini for professional photography style
-- ✅ 5 default professional backgrounds if no prompt provided
-- ✅ Uses nano-banana model for fast, high-quality image generation
-- ✅ Response time: ~7-12 seconds
+- Auto-refines user prompts with GPT-4o-mini for professional photography style
+- 5 default professional backgrounds if no prompt provided
+- Uses nano-banana model for fast, high-quality image generation
+- Response time: ~7-12 seconds
 
 ---
 
@@ -106,10 +106,10 @@ curl -X POST http://localhost:3000/v1/analyze-product \
 ```
 
 ### Features
-- ✅ Vision AI using Google Gemini 2.5 Flash
-- ✅ 9 detailed product categories
-- ✅ Accurate product classification
-- ✅ Response time: ~3-5 seconds
+- Vision AI using Google Gemini 2.5 Flash
+- 9 detailed product categories
+- Accurate product classification
+- Response time: ~3-5 seconds
 
 ---
 
@@ -195,12 +195,12 @@ curl -X POST http://localhost:3000/v1/descriptions/generate \
 ```
 
 ### Features
-- ✅ Supports Turkish and English
-- ✅ Two tone options: concise (2-3 sentences) or detailed (4-6 sentences)
-- ✅ SEO-friendly, honest, and trustworthy copy
-- ✅ Industry-aware descriptions
-- ✅ Configurable creativity (temperature) and length (maxTokens)
-- ✅ Response time: ~1-3 seconds
+- Supports Turkish and English
+- Two tone options: concise (2-3 sentences) or detailed (4-6 sentences)
+- SEO-friendly, honest, and trustworthy copy
+- Industry-aware descriptions
+- Configurable creativity (temperature) and length (maxTokens)
+- Response time: ~1-3 seconds
 
 ---
 
@@ -306,15 +306,15 @@ curl -X POST http://localhost:3000/v1/marketing/kit \
 ```
 
 ### Features
-- ✅ One-click complete marketing kit generation
-- ✅ Includes tagline, bullets, hashtags, social media captions, and alt text
-- ✅ Supports Turkish and English
-- ✅ Two tone options: concise or detailed
-- ✅ SEO-friendly, realistic copy with feature→benefit approach
-- ✅ Platform-agnostic hashtags with # prefix
-- ✅ Accessibility-focused alt text (objective descriptions)
-- ✅ Configurable creativity (temperature) and length (maxTokens)
-- ✅ Response time: ~2-5 seconds
+- One-click complete marketing kit generation
+- Includes tagline, bullets, hashtags, social media captions, and alt text
+- Supports Turkish and English
+- Two tone options: concise or detailed
+- SEO-friendly, realistic copy with feature→benefit approach
+- Platform-agnostic hashtags with # prefix
+- Accessibility-focused alt text (objective descriptions)
+- Configurable creativity (temperature) and length (maxTokens)
+- Response time: ~2-5 seconds
 
 ### Kit Contents
 
